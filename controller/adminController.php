@@ -11,14 +11,17 @@ switch ($action) {
     case "traitementLogin":
         $email = filter_var($_POST['email'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $password = filter_var($_POST['password'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $hashedPassword = hash("SHA512", $password);
+
         $objetAdminManager = new AdminManager($lePDO);
-        $admin = $objetAdminManager->fetchAdminByEmailAndMdp($email, $password);
+        $admin = $objetAdminManager->fetchAdminByEmailAndMdp($email, $hashedPassword);
         if (empty($admin)) {
             $_SESSION['erreur'] = [];
             array_push($_SESSION['erreur'], "Erreur de connexion !");
             header("location:./?path=admin&action=adminLogin");
         } else {
             $_SESSION["email"] = $admin->getEmail();
+            $_SESSION["nom"] = $admin->getNom();
             $_SESSION["id"] = $admin->getIdAdmin();
             $_SESSION["role"] = "admin";
             header("location:./");
@@ -36,10 +39,11 @@ switch ($action) {
         if ($role == "admin") {
             require("view/admin/addAdmin.php");
         } else {
-            $_SESSION["error"] = "Echec d'accès";
+            $_SESSION["erreur"] = "Echec d'accès";
             require('view/404.php');
         }
         break;
+
     case "traitementInscription":
         $role = $_SESSION["role"] ?? false;
         if ($role == "admin") {
@@ -48,19 +52,19 @@ switch ($action) {
             $password  = filter_var($_POST["mdp1"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password2 = filter_var($_POST["mdp2"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             if ($password != $password2) {
-                $_SESSION["erreur"] = ["Vérifier votre mot de passe"];
+                $_SESSION["erreur"] = "Vérifier votre mot de passe";
                 exit;
             }
+            $hashedPassword = hash("SHA512", $password);
 
             $objetAdminManager = new AdminManager($lePDO);
-            $resultat = $objetAdminManager->createAdmin($nom, $email, $password);
+            $resultat = $objetAdminManager->createAdmin($nom, $email, $hashedPassword);
             if ($resultat == true) {
-
-                $_SESSION["validation"] = ["Ajout d'un admin réussi !"];
+                $_SESSION["validation"] = "Ajout d'un admin réussi !";
                 header("location:?path=admin&action=dashboard");
             } else {
-                $_SESSION["erreur"] = ["Echec de l'ajout"];
-                header("location:?path=admin&action=formAdd");
+                $_SESSION["erreur"] = "Echec de l'ajout";
+                header("location:?path=admin&action=dashboard");
             }
         } else {
             $_SESSION["erreur"] = "Echec d'accès";
@@ -75,14 +79,14 @@ switch ($action) {
             $admins = $objetAdminManager->fetchallAdmin();
             require("view/admin/dashboard.php");
         } else {
-            $_SESSION["error"] = "Echec d'accès";
+            $_SESSION["erreur"] = "Echec d'accès";
             require('view/404.php');
         }
         break;
 
     case "formUpdate":
         $role = $_SESSION["role"] ?? false;
-        if ($role == "admin" || $role == "superAdmin") {
+        if ($role == "admin") {
             $id = filter_var($_GET["id"], FILTER_SANITIZE_NUMBER_INT);
             $objectAdminManager = new AdminManager($lePDO);
             $admins = $objectAdminManager->fetchAdminbyId($id);
@@ -95,23 +99,24 @@ switch ($action) {
 
     case "processUpdate":
         $role = $_SESSION["role"] ?? false;
-        if ($role == "superAdmin" || $role == "admin") {
+        if ($role == "admin") {
             $id = filter_var($_POST["id"], FILTER_SANITIZE_NUMBER_INT);
             $nom = filter_var($_POST["nom"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $email = filter_var($_POST["email"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password  = filter_var($_POST["mdp1"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $password2 = filter_var($_POST["mdp2"], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             if ($password != $password2) {
-                $_SESSION["error"] = "Vérifier votre mot de passe";
+                $_SESSION["erreur"] = "Vérifier votre mot de passe";
                 exit;
             }
+            $hashedPassword = hash("SHA512", $password);
             $objectAdminManager = new AdminManager($lePDO);
-            $admins = $objectAdminManager->updateAdmin($id, $nom, $email, $password);
+            $admins = $objectAdminManager->updateAdmin($id, $nom, $email, $hashedPassword);
             if ($admins) {
-                $_SESSION["validation"] = ["Mise à jour réussie"];
+                $_SESSION["validation"] = "Mise à jour réussie";
                 header("location:?path=admin&action=dashboard");
             } else {
-                $_SESSION["erreur"] = ["Echec de la mise à jour"];
+                $_SESSION["erreur"] = "Echec de la mise à jour";
                 header("location:?path=admin&action=formUpdate&id=$id");
             }
         } else {
@@ -126,10 +131,10 @@ switch ($action) {
             $objectAdminManager = new AdminManager($lePDO);
             $resultat = $objectAdminManager->deleteAdmin($id);
             if ($resultat) {
-                $_SESSION["validation"] = ["Suppression réussie"];
+                $_SESSION["validation"] = "Suppression réussie";
                 header("location:?path=admin&action=dashboard");
             } else {
-                $_SESSION["erreur"] = ["Echec de la suppression"];
+                $_SESSION["erreur"] = "Echec de la suppression";
                 header("location:?path=admin&action=dashboard");
             }
         } else {

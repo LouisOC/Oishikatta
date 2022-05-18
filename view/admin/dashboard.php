@@ -8,20 +8,17 @@ ob_start(); ?>
 <div class="container mt-5">
     <h1>Gestion des Admins</h1>
     <!-- Affichage des messages d'erreurs et validation -->
-    <?php if (isset($_SESSION['erreur'])) {
-        echo ("<div class='text-danger fw-bold h2 text-center list-unstyled my-4'>");
-        foreach ($_SESSION['erreur'] as $msgErreur) {
-            echo "<li>" . $msgErreur . "</li>";
-        }
-        echo ("</div>");
-        unset($_SESSION['erreur']);
-    } elseif (isset($_SESSION['validation'])) {
-        echo ("<div class='text-success fw-bold h2 text-center list-unstyled my-4'>");
-        foreach ($_SESSION['validation'] as $msgValidation) {
-            echo "<li>" . $msgValidation . "</li>";
-        }
-        echo ("</div>");
-        unset($_SESSION['validation']);
+    <?php
+    if (isset($_SESSION["erreur"])) {
+    ?>
+        <div class="alert alert-danger"><?= $_SESSION["erreur"] ?></div>
+    <?php
+        unset($_SESSION["erreur"]);
+    } else if (isset($_SESSION["validation"])) {
+    ?>
+        <div class="alert alert-primary"><?= $_SESSION["validation"] ?></div>
+    <?php
+        unset($_SESSION["validation"]);
     }
     ?>
 

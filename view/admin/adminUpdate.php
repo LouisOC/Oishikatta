@@ -7,7 +7,7 @@ ob_start(); ?>
     <form novalidate action="./?path=admin&action=processUpdate" method="post" class="d-flex justify-content-center">
         <input type="hidden" name="id" value="<?= $admins->getIdAdmin() ?>">
         <section class="my-2">
-            <h1 class="text-center mb-5">Formulaire de modification</h1>
+            <h1 class="text-center mb-5">Formulaire de modification d'un administrateur</h1>
 
             <div class="my-2 col-lg-12 col-md-8">
                 <label for="inputNom">Nom* </label>

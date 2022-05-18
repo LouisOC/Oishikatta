@@ -25,6 +25,7 @@ class KimonoManager
         }
     }
 
+
     public function fetchKimonobyId($id)
     {
 
@@ -36,6 +37,53 @@ class KimonoManager
             $sql->setFetchMode(PDO::FETCH_CLASS, "kimono");
             $resultat = $sql->fetch();
             return $resultat;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+
+    public function createKimono($titre, $cheminImage)
+    {
+        try {
+            $connex = $this->lePDO;
+            $sql = $connex->prepare("INSERT INTO kimono values(null,:titre,:image_kimono)");
+            $sql->bindParam(":titre", $titre);
+            $sql->bindParam(":image_kimono", $cheminImage);
+            $sql->execute();
+            return true;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+
+
+    public function updateKimono($id, $titre, $cheminImage)
+    {
+        try {
+            $connex = $this->lePDO;
+            $sql = $connex->prepare("UPDATE kimono set titre=:titre,image_kimono=:image_kimono where id_kimono=:id");
+            $sql->bindParam(":titre", $titre);
+            $sql->bindParam(":image_kimono", $cheminImage);
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            return true;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+
+
+    public function deleteKimono($id)
+    {
+        try {
+            $connex = $this->lePDO;
+            $sql = $connex->prepare("DELETE FROM kimono WHERE id_kimono=:id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            return true;
         } catch (PDOException $error) {
             echo $error->getMessage();
             return false;

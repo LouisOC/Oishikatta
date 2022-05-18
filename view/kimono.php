@@ -15,7 +15,7 @@
         foreach ($kimonos as $unkimono) {
         ?>
             <div class="col-lg-4 col-md-12">
-                <img class="img-fluid ni" src="public/kimonos/<?= $unkimono->getImageKimono() ?>" alt="">
+                <img class="img-fluid ni" src="<?= $unkimono->getImageKimono() ?>" alt="">
             </div>
         <?php } ?>
     </div>

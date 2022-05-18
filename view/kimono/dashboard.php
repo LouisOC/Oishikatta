@@ -8,24 +8,21 @@ ob_start(); ?>
 <div class="container mt-5">
     <h1>Gestion des kimonos</h1>
     <!-- Affichage des messages d'erreurs et validation -->
-    <?php if (isset($_SESSION['erreur'])) {
-        echo ("<div class='text-danger fw-bold h2 text-center list-unstyled my-4'>");
-        foreach ($_SESSION['erreur'] as $msgErreur) {
-            echo "<li>" . $msgErreur . "</li>";
-        }
-        echo ("</div>");
-        unset($_SESSION['erreur']);
-    } elseif (isset($_SESSION['validation'])) {
-        echo ("<div class='text-success fw-bold h2 text-center list-unstyled my-4'>");
-        foreach ($_SESSION['validation'] as $msgValidation) {
-            echo "<li>" . $msgValidation . "</li>";
-        }
-        echo ("</div>");
-        unset($_SESSION['validation']);
+    <?php
+    if (isset($_SESSION["erreur"])) {
+    ?>
+        <div class="alert alert-danger"><?= $_SESSION["erreur"] ?></div>
+    <?php
+        unset($_SESSION["erreur"]);
+    } else if (isset($_SESSION["validation"])) {
+    ?>
+        <div class="alert alert-primary"><?= $_SESSION["validation"] ?></div>
+    <?php
+        unset($_SESSION["validation"]);
     }
     ?>
 
-    <a class="btn btn-danger my-2" href="./?path=kimono&action=addAdmin">Ajouter un kimono</a>
+    <a class="btn btn-danger my-2" href="./?path=kimono&action=addKimono">Ajouter un kimono</a>
     <table class="table mt-5">
         <theader>
             <tr class="align-middle">
@@ -40,7 +37,7 @@ ob_start(); ?>
                 <tr class=" align-middle">
                     <td class="liste-td"><?= $kimono->getIdKimono() ?></td>
                     <td class="liste-td"><?= $kimono->getTitre() ?></td>
-                    <td class="liste-td"><img src="public/kimonos/<?= $kimono->getImageKimono() ?>" width="40px;"></td>
+                    <td class="liste-td"><img src="<?= $kimono->getImageKimono() ?>" width="40px"> </td>
                     <td class="liste-td"> <a href="?path=kimono&action=formUpdate&id=<?= $kimono->getIdKimono() ?>" class="btn btn-primary">Modifier</a>
 
                         <form class="mt-2" action="?path=kimono&action=processDelete" method="post">

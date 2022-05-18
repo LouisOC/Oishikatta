@@ -11,7 +11,7 @@
         foreach ($plats as $unPlat) {
         ?>
             <div class="card">
-                <img src="public/images/plats/<?= $unPlat->getImagePlat(); ?>" class="card-img-top img-fluid photo" alt="...">
+                <img src="<?= $unPlat->getImagePlat(); ?>" class="card-img-top img-fluid photo" alt="...">
                 </a>
                 <div class="card-body">
                     <h3 class="card-title"><?= $unPlat->getTitre(); ?></h3>

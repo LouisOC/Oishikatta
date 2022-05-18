@@ -28,6 +28,43 @@ class ReservationManager
         }
     }
 
+    public function fetchReservationbyId($id)
+    {
+
+        try {
+            $connex = $this->lePDO;
+            $sql = $connex->prepare("SELECT * FROM reservation where Id_reservation=:id");
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            $sql->setFetchMode(PDO::FETCH_CLASS, "reservation");
+            $resultat = $sql->fetch();
+            return $resultat;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+
+    public function updateReservation($id, $nombre, $email, $nom, $jour, $heure, $tel)
+    {
+        try {
+            $connex = $this->lePDO;
+            $sql = $connex->prepare("UPDATE reservation set nombre=:nombre, email=:email,nom=:nom,jour=:jour,heure=:heure,tel=:tel where Id_reservation=:id");
+            $sql->bindParam(":nombre", $nombre);
+            $sql->bindParam(":email", $email);
+            $sql->bindParam(":nom", $nom);
+            $sql->bindParam(":jour", $jour);
+            $sql->bindParam(":heure", $heure);
+            $sql->bindParam(":tel", $tel);
+            $sql->bindParam(":id", $id);
+            $sql->execute();
+            return true;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
+        }
+    }
+
     function fetchAllReservation()
     {
 
@@ -41,6 +78,20 @@ class ReservationManager
             return $resultat;
         } catch (PDOException $error) {
             echo $error->getMessage();
+        }
+    }
+
+    function deleteReservation($idReservation)
+    {
+        try {
+            $connex = $this->lePDO;
+            $sql = $connex->prepare("DELETE FROM reservation WHERE Id_reservation=:id");
+            $sql->bindParam(":id", $idReservation);
+            $sql->execute();
+            return true;
+        } catch (PDOException $error) {
+            echo $error->getMessage();
+            return false;
         }
     }
 }

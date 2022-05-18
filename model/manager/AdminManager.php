@@ -80,7 +80,7 @@ class AdminManager
     {
         try {
             $connex = $this->lePDO;
-            $sql = $connex->prepare("UPDATE admin set nom=:nom, email=:email, password=:password where id_admin:id");
+            $sql = $connex->prepare("UPDATE admin set nom=:nom, email=:email, password=:password where id_admin=:id");
             $sql->bindParam(":nom", $nom);
             $sql->bindParam(":email", $email);
             $sql->bindParam(":password", $password);

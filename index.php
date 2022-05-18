@@ -27,7 +27,7 @@ switch ($path) {
         require("controller/categorieController.php");
         break;
     case "horairesouverture":
-        require("controller/horairesouverturesController.php");
+        require("controller/horairesouvertureController.php");
         break;
     case "kimono":
         require("controller/kimonoController.php");

@@ -1,4 +1,4 @@
-    <nav class="navbar navigation navbar-expand-md navbar-dark">
+    <nav class="navbar navigation navbar-expand-lg navbar-dark ">
 
         <img class="img-responsive ms-3 me-3 bg-white" style="border-radius: 15px;padding: 3px;width:30px" src="public/images/baguettes.png" alt="couverts baguettes">
         <a class="navbar-brand ml-2 lien" href="./?path=main&action=home">Oishikatta</a>
@@ -25,9 +25,11 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="?path=admin&action=dashboard">Gérer les utilisateurs</a>
-                                <a class="dropdown-item" href="?path=plat&action=dashboard">Gérer les plats</a>
+                                <a class="dropdown-item" href="?path=admin&action=dashboard">Gérer les administrateurs</a>
+                                <a class="dropdown-item" href="?path=horairesouverture&action=dashboard">Gérer les horaires d'ouverture</a>
                                 <a class="dropdown-item" href="?path=kimono&action=dashboard">Gérer les kimonos</a>
+                                <a class="dropdown-item" href="?path=plat&action=dashboard">Gérer les plats</a>
+                                <a class="dropdown-item" href="?path=reservation&action=dashboard">Gérer les réservations</a>
                             </li>
                         </ul>
                     </li>
@@ -35,7 +37,7 @@
                         <a class="nav-link" href="./?path=admin&action=logout">Se deconnecter</a>
                     </li>
                     <?php if (isset($_SESSION['email'])) : ?>
-                        <div class="nav-link">Bonjour <?= $_SESSION['email'] ?> ( <?= $_SESSION['role'] ?> )</div>
+                        <div class="nav-link">Bonjour <?= ucfirst($_SESSION["nom"]) ?> ( <?= $_SESSION['role'] ?> )</div>
                     <?php endif; ?>
                 <?php endif;
 

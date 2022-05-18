@@ -6,7 +6,7 @@ ob_start(); ?>
 
 
 <div class="container mt-5">
-    <form action="./?path=plat&action=traitementPlat" method="post" class="d-flex justify-content-center">
+    <form action="./?path=plat&action=traitementPlat" method="post" class="d-flex justify-content-center" enctype="multipart/form-data">
         <section class="my-2">
             <h1 class="text-center mb-5">Formulaire d'ajout d'un plat</h1>
 
@@ -29,11 +29,12 @@ ob_start(); ?>
 
             </div>
             <hr>
-            <input class="form-control" type="file" name="image" accept="image/*" id="fileImage">
+
+            <input class="form-control" type="file" name="image" id="fileImage">
 
             <div class="my-2 col-lg-12 col-md-8">
                 <label for="idcateg">Id Catégorie </label>
-                <input required type="number" name="idcategorie" min="1" step="1" max="3" class="form-control" />
+                <input required type="number" name="id_categorie" min="1" step="1" max="3" class="form-control" />
             </div>
             <hr>
 
